@@ -19,14 +19,14 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')+
                   panel.grid.minor = element_blank()))
 #Load data ----------------
 
-biomass <- read_excel(path = "./data/regional_biomass.xlsx")
+reg_biomass <- read_excel(path = "./data/regional_biomass.xlsx")
 
 ### regional figure ------------
 # replication of Figure 2 from 2017 memo
-biomass %>% select(Year, legal, mature) ->biomass1
-biomass1_long <- gather(biomass1, type, pounds, legal:mature, factor_key = TRUE)
+reg_biomass %>% select(Year, legal, mature) ->biomass1
+reg_biomass1_long <- gather(biomass1, type, pounds, legal:mature, factor_key = TRUE)
 
-ggplot(biomass1_long, aes(Year, pounds, group = type))+ 
+ggplot(reg_biomass1_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "grey1"))+
@@ -39,6 +39,6 @@ ggplot(biomass1_long, aes(Year, pounds, group = type))+
   geom_hline(yintercept = 761292, color = "grey1")+
   geom_hline(yintercept = 1117286, color = "grey1", linetype = "dashed")
 
-biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(legal))
-biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(mature))
+reg_biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(legal))
+reg_biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(mature))
 
