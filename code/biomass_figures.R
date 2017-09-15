@@ -21,6 +21,15 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')+
 
 biomass <- read_excel(path = "./data/2017_biomass_model.xlsx")
 
+# Regional biomass ----------------
+head(biomass)
+biomass %>% 
+  group_by(Year) %>% 
+  summarise(leg = sum(legal), mat = sum(mature)) -> survey_area_biom
+
+survey_area_biom_long <- gather(survey_area_biom, type, pounds, leg:mature)
+
+
 # Area figures ---------------------
 # pybus ---------------
 biomass %>% filter(Location == "Pybus") %>% 
