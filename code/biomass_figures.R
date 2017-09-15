@@ -29,10 +29,12 @@ biomass %>%
   summarise(leg = sum(legal), mat = sum(mature)) -> survey_area_biom
 
 survey_area_biom %>% 
+  left_join(fishery.status) -> survey_area_biom
   
 
 survey_area_biom_long <- gather(survey_area_biom, type, pounds, leg:mat, factor_key = TRUE)
 
+# regional figure 
 ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
@@ -48,6 +50,20 @@ ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+
 
 survey_area_biom %>% filter(Year <= 2007) %>% summarise(mean(leg))
 survey_area_biom %>% filter(Year <= 2007) %>% summarise(mean(mat))
+
+# regional figure with closures/ openings
+ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
+  geom_point(aes(color = fishery.status, shape = type), size =3) +
+  geom_line(aes(color = type, group = type))+
+  scale_colour_manual(name = "", values = c("grey1", "grey1", "grey1", "red"))+
+  scale_shape_manual(name = "", values = c(16, 1))+
+  
+  ylim(0,1500000) +ggtitle("Survey areas 2017 Model") + ylab("Biomass (lbs)")+ xlab("")+
+  theme(plot.title = element_text(hjust =0.5)) + 
+  scale_x_continuous(breaks = seq(min(1979),max(2019), by =2)) +
+  theme(legend.position = c(0.8,0.7)) + 
+  geom_hline(yintercept = 646753, color = "grey1")+
+  geom_hline(yintercept = 907431, color = "grey1", linetype = "dashed")
 
 # Area figures ---------------------
 # pybus ---------------
