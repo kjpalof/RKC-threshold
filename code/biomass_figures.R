@@ -60,10 +60,22 @@ ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+
   
   ylim(0,1500000) +ggtitle("Survey areas 2017 Model") + ylab("Biomass (lbs)")+ xlab("")+
   theme(plot.title = element_text(hjust =0.5)) + 
-  scale_x_continuous(breaks = seq(min(1979),max(2019), by =2)) +
+  scale_x_continuous(breaks = seq(min(1979),max(2019), by =4)) +
   theme(legend.position = c(0.8,0.7)) + 
   geom_hline(yintercept = 646753, color = "grey1")+
   geom_hline(yintercept = 907431, color = "grey1", linetype = "dashed")
+
+### regional thresholds -------------------
+survey_area_biom %>% filter(Year >=1993 & Year <= 2007) %>% summarise(mean(leg))
+survey_area_biom %>% filter(Year >=1993 & Year <= 2007) %>% summarise(mean(mat))
+
+survey_area_biom %>% 
+  filter(Year >=1993 & Year <= 2007) %>% 
+  summarise(legal_lt = mean(leg), mature_lt = mean(mat)) -> regional_sum
+regional_sum_long <- gather(regional_sum, type, pounds, legal_lt:mature_lt, factor_key = TRUE)
+
+regional_sum_long %>% 
+  mutate(p50 = 0.5*(pounds), p60 = 0.6*pounds, p70 = 0.7*pounds, p80 = 0.8*pounds )
 
 # Area figures ---------------------
 # pybus ---------------
