@@ -50,9 +50,19 @@ biomass_17 %>%
   group_by(Year) %>% 
   summarise(reg_legal = sum(legal), reg_mature = sum(mature)) -> biomass_17a
 
+biomass_17a %>% 
+  summarise(legal_mean = mean(reg_legal), mature_mean = mean(reg_mature), 
+            Mmean_50 = 0.50*mature_mean, Mmean_75 = 0.75*mature_mean, 
+            Mmean_125 = 1.25*mature_mean)
 
+biomass_17a %>% 
+  filter(Year >= 1993 & Year <= 2007) %>%
+  summarise(legal_LT = mean(reg_legal), mature_LT = mean(reg_mature), 
+            M_LT_50 = 0.50*mature_LT, M_LT_75 = 0.75*mature_LT, 
+            M_LT_125 = 1.25*mature_LT)
 
-### 2017 model output figure -------
+### 2017 model output figure 2-------
+# has long term averages from 1993-2007
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
 
 ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
