@@ -43,3 +43,29 @@ ggplot(reg_biomass1_long, aes(Year, pounds, group = type))+
 reg_biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(legal))
 reg_biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(mature))
 
+
+
+### 2017 model output figure -------
+biomass_17 %>% 
+  select(Year, legal, mature) %>% 
+  group_by(Year) %>% 
+  summarise(reg_legal = sum(legal), reg_mature = sum(mature)) -> biomass_17a
+
+biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
+
+ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
+  geom_point(aes(color = type, shape = type), size =3) +
+  geom_line(aes(color = type, group = type))+
+  scale_colour_manual(name = "", values = c("grey1", "grey1"))+
+  scale_shape_manual(name = "", values = c(16, 1))+
+  
+  ylim(0,2000000) +ggtitle("regional biomass from 2017 model") + ylab("Biomass (lbs)")+ xlab("Year")+
+  theme(plot.title = element_text(hjust =0.5)) + 
+  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
+  theme(legend.position = c(0.8,0.7)) + 
+  geom_hline(yintercept = 646753.4, color = "grey1")+
+  geom_hline(yintercept = 907430.5, color = "grey1", linetype = "dashed") +
+  geom_hline(yintercept = mean(reg_legal), color = "red")
+
+biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_legal))
+biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_mature))
