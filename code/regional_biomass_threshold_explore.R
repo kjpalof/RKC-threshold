@@ -101,7 +101,20 @@ ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
              show.legend = TRUE)
       
 
-### 2017 output long term baseline average -------------
-
-
 ### 2017 output all years average --------------
+biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
+avg_all_long <- gather(avg_all, type, pounds, legal_mean:Mmean_125, factor_key = TRUE)
+
+ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
+  geom_point(aes(color = type, shape = type), size =3) +
+  geom_line(aes(color = type, group = type))+
+  scale_colour_manual(name = "", values = c("grey1", "gray30", "green", "red","blue", "gray48", "gray48"
+  ))+
+  scale_shape_manual(name = "", values = c(16, 1))+
+  
+  ylim(0,2000000) +ggtitle("regional biomass from 2017 model") + ylab("Biomass (lbs)")+ xlab("Year")+
+  theme(plot.title = element_text(hjust =0.5)) + 
+  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
+  theme(legend.position = c(0.8,0.7)) + 
+  geom_hline(data = avg_all_long, aes(yintercept = pounds, group = type, colour = type),
+             show.legend = TRUE)
