@@ -20,6 +20,7 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')+
 #Load data ----------------
 
 reg_biomass <- read_excel(path = "./data/regional_biomass.xlsx")
+biomass_17 <- read_excel(path = "./data/2017_biomass_model.xlsx", sheet = 1)
 
 ### regional figure ------------
 # replication of Figure 2 from 2017 memo
@@ -32,8 +33,8 @@ ggplot(reg_biomass1_long, aes(Year, pounds, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "grey1"))+
   scale_shape_manual(name = "", values = c(16, 1))+
   
-  ylim(0,2000000) +ggtitle("regional biomass") + ylab("Biomass (lbs)")+ xlab("")+
-  theme(axis.text.x = element_blank(), plot.title = element_text(hjust =0.5)) + 
+  ylim(0,2000000) +ggtitle("regional biomass") + ylab("Biomass (lbs)")+ xlab("Year")+
+  theme(plot.title = element_text(hjust =0.5)) + 
   #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
   theme(legend.position = c(0.8,0.7)) + 
   geom_hline(yintercept = 761292, color = "grey1")+
