@@ -65,7 +65,7 @@ biomass_17a %>%
 # has long term averages from 1993-2007
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
 
-ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
+fig1<- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "grey1"))+
@@ -80,6 +80,11 @@ ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
   
 biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_legal))
 biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_mature))
+
+# save plot 
+png('./results/regional_2017.png', res= 300, width = 8, height =5.5, units = "in")
+fig1
+dev.off()
 
 ### 2017 output long term baseline average -------------
 
@@ -101,7 +106,7 @@ fig3 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
              show.legend = TRUE)
       
 # save plot 
-png('./results/2017_lt_basleine.png', res= 300, width = 8, height =5.5, units = "in")
+png('./results/lt_basleine_2017.png', res= 300, width = 8, height =5.5, units = "in")
 fig3
 dev.off()
 
@@ -124,6 +129,6 @@ fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
              show.legend = TRUE)
 
 # save plot 
-png('./results/2017_allyears.png', res= 300, width = 8, height =5.5, units = "in")
+png('./results/allyears_2017.png', res= 300, width = 8, height =5.5, units = "in")
 fig4
 dev.off()
