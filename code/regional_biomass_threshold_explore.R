@@ -82,7 +82,7 @@ biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_legal
 biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_mature))
 
 # save plot 
-png('./results/regional_2017.png', res= 300, width = 8, height =5.5, units = "in")
+png('./results/regional_2017.png', res= 300, width = 7.5, height =4.0, units = "in")
 fig1
 dev.off()
 
@@ -106,7 +106,7 @@ fig3 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
              show.legend = TRUE)
       
 # save plot 
-png('./results/lt_basleine_2017.png', res= 300, width = 8, height =5.5, units = "in")
+png('./results/lt_basleine_2017.png', res= 300, width = 7.5, height = 4.0, units = "in")
 fig3
 dev.off()
 
@@ -129,6 +129,6 @@ fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
              show.legend = TRUE)
 
 # save plot 
-png('./results/allyears_2017.png', res= 300, width = 8, height =5.5, units = "in")
+png('./results/allyears_2017.png', res= 300, width = 7.5, height = 4.0, units = "in")
 fig4
 dev.off()
