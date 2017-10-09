@@ -11,7 +11,7 @@ library(extrafont)
 library(grid)
 library(gridExtra)
 #font_import()
-loadfonts(device="win")
+#loadfonts(device="win")
 windowsFonts(Times=windowsFont("TT Times New Roman"))
 
 theme_set(theme_bw(base_size=12,base_family='Times New Roman')+ 
@@ -86,7 +86,7 @@ biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_matur
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
 avg_baseline_long <- gather(avg_baseline, type, pounds, legal_LT:M_LT_125, factor_key = TRUE)
 
-ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
+fig3 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "green", "red","blue", "gray30", "gray48", "gray48"
@@ -100,12 +100,16 @@ ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
   geom_hline(data = avg_baseline_long, aes(yintercept = pounds, group = type, colour = type),
              show.legend = TRUE)
       
+# save plot 
+png('./results/2017_lt_basleine.png', res= 300, width = 8, height =5.5, units = "in")
+fig3
+dev.off()
 
 ### 2017 output all years average --------------
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
 avg_all_long <- gather(avg_all, type, pounds, legal_mean:Mmean_125, factor_key = TRUE)
 
-ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
+fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "gray30", "green", "red","blue", "gray48", "gray48"
@@ -118,3 +122,8 @@ ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
   theme(legend.position = c(0.8,0.7)) + 
   geom_hline(data = avg_all_long, aes(yintercept = pounds, group = type, colour = type),
              show.legend = TRUE)
+
+# save plot 
+png('./results/2017_allyears.png', res= 300, width = 8, height =5.5, units = "in")
+fig4
+dev.off()
