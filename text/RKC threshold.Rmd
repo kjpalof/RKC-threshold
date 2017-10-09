@@ -26,7 +26,6 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ### Figure 1: Regional biomass of surveyed areas from 2017 models
 
-```{r fig1}
-![ ](../results/regional_2017.png)
-```
+![](../results/regional_2017.png)
+
 
