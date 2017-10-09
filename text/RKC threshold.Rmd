@@ -17,12 +17,15 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')
 knitr::opts_chunk$set(echo = FALSE, message = F, warning = F)
 ```
 
-## R Markdown
+## Objective
+Develop methods to establish a biological threshold for Southeast Alaska red king crab management.
+Ideally this threshold would be used to determine a harvest control rule for more sustainable management.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Background
+Currently the red king crab fishery in Southeast Alaska is managed, in regulation, using a clause that opens the fishery as long as there is a 200,000 pound surplus for harvest.  However, there is no guidance given as to how this surplus should or can be determined or guidance on the level that the population should be sustained. 
+Data available for use in this analysis is survey CPUE of all size and sex classes, fishey CPUE (although the fishery has only opened once in the last decade), and mature male biomass estimated using a catch-survey analysis model (CSA) from survey CPUE and harvest.  
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
+## Visualizations
 
 ### Figure 1: Regional biomass of surveyed areas from 2017 models
 
