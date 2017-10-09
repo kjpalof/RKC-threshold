@@ -32,3 +32,11 @@ Data available for use in this analysis is survey CPUE of all size and sex class
 ![](../results/regional_2017.png)
 
 
+### Figure 2: Regional biomass of surveyed area from 2017 models using current long-term baseline (93-07)
+![](../results/lt_baseline_2017.png)
+
+### Figure 3: Regional biomass of surveyed area from 2017 models using a baseline from all years
+![](../results/allyears_2017.png)
+
+
+
