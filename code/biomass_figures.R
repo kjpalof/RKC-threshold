@@ -21,7 +21,7 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')+
 
 biomass <- read_excel(path = "./data/2017_biomass_model.xlsx")
 fishery.status <- read_excel(path = './data/fishery.status.xlsx')
-harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1)
+harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1) # harvest is in pounds.
 
 # Regional biomass ----------------
 head(biomass)
@@ -29,11 +29,14 @@ biomass %>%
   group_by(Year) %>% 
   summarise(leg = sum(legal), mat = sum(mature)) -> survey_area_biom
 
+
+survey_area_biom %>% 
+  left_join(harvest)-> survey_area_biom # harvest is in pounds also
 survey_area_biom %>% 
   left_join(fishery.status) -> survey_area_biom
-  
 
-survey_area_biom_long <- gather(survey_area_biom, type, pounds, leg:mat, factor_key = TRUE)
+
+survey_area_biom_long <- gather(survey_area_biom, type, pounds, leg:harvest, factor_key = TRUE)
 
 # regional figure 
 ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
