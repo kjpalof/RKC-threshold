@@ -21,6 +21,7 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')+
 
 reg_biomass <- read_excel(path = "./data/regional_biomass.xlsx")
 biomass_17 <- read_excel(path = "./data/2017_biomass_model.xlsx", sheet = 1)
+harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1)
 
 ### regional figure ------------
 # replication of Figure 2 from 2017 memo
@@ -132,3 +133,5 @@ fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
 png('./results/allyears_2017.png', res= 300, width = 7.5, height = 5.0, units = "in")
 fig4
 dev.off()
+
+
