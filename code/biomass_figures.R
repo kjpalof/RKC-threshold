@@ -59,8 +59,8 @@ survey_area_biom %>% filter(Year <= 2007) %>% summarise(mean(mat))
 fig4 <- ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = fishery.status, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("grey1", "grey1", "grey1", "red"))+
-  scale_shape_manual(name = "", values = c(16, 1))+
+  scale_colour_manual(name = "", values = c("grey1", "gray75", "grey1", "grey1", "red"))+
+  scale_shape_manual(name = "", values = c(16, 1, 20))+
   
   ylim(0,1500000) +ggtitle("Survey areas 2017 Model") + ylab("Biomass (lbs)")+ xlab("")+
   theme(plot.title = element_text(hjust =0.5)) + 
