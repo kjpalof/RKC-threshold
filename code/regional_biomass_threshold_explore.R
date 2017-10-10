@@ -96,7 +96,7 @@ fig3 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
   geom_line(aes(color = type, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "green", "red","blue", "gray30", "gray48", "gray48"
                                             ))+
-  scale_shape_manual(name = "", values = c(16, 1))+
+  scale_shape_manual(name = "", values = c(16, 1), guide = "none")+
   
   ylim(0,2000000) +ggtitle("regional biomass from 2017 model, 93-07 baseline") + ylab("Biomass (lbs)")+ xlab("Year")+
   theme(plot.title = element_text(hjust =0.5)) + 
@@ -119,7 +119,7 @@ fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
   geom_line(aes(color = type, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "gray30", "green", "red","blue", "gray48", "gray48"
   ))+
-  scale_shape_manual(name = "", values = c(16, 1))+
+  scale_shape_manual(name = "", values = c(16, 1), guide = "none")+
   
   ylim(0,2000000) +ggtitle("regional biomass from 2017 model") + ylab("Biomass (lbs)")+ xlab("Year")+
   theme(plot.title = element_text(hjust =0.5)) + 
