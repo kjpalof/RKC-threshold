@@ -52,7 +52,7 @@ survey_area_biom %>% filter(Year <= 2007) %>% summarise(mean(leg))
 survey_area_biom %>% filter(Year <= 2007) %>% summarise(mean(mat))
 
 # regional figure with closures/ openings
-ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
+fig4 <- ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = fishery.status, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
   scale_colour_manual(name = "", values = c("grey1", "grey1", "grey1", "red"))+
@@ -64,6 +64,11 @@ ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+
   theme(legend.position = c(0.8,0.7)) + 
   geom_hline(yintercept = 646753, color = "grey1")+
   geom_hline(yintercept = 907431, color = "grey1", linetype = "dashed")
+
+# save plot 
+png('./results/open_closed_17.png', res= 300, width = 7.5, height =4.0, units = "in")
+fig4
+dev.off()
 
 ### regional thresholds -------------------
 survey_area_biom %>% filter(Year >=1993 & Year <= 2007) %>% summarise(mean(leg))
