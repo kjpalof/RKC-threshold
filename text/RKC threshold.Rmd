@@ -24,6 +24,21 @@ Ideally this threshold would be used to determine a harvest control rule for mor
 ## Background
 Currently the red king crab fishery in Southeast Alaska is managed, in regulation, using a clause that opens the fishery as long as there is a 200,000 pound surplus for harvest.  However, there is no guidance given as to how this surplus should or can be determined or guidance on the level that the population should be sustained. 
 Data available for use in this analysis is survey CPUE of all size and sex classes, fishey CPUE (although the fishery has only opened once in the last decade), and mature male biomass estimated using a catch-survey analysis model (CSA) from survey CPUE and harvest.  
+Establishing biological reference points for this fishery would aid in more effective management. 
+
+
+## Methods?
+
+#### Long term average of biomass estimates
+
+#### Average yield
+This is hard to use due to the sparse nature of the fishery.  There has been a fishery about once a     decade which makes it hard to use yield or harvest as an indicator.
+
+#### Biological reference points - biomass-based
+Could use a sliding scale to reduce fishing mortality as stock declines.
+Need to attempt to establish a B0, and determine the compensatory capacity of the stock.
+    
+
 
 ## Visualizations
 
