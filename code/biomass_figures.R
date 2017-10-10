@@ -21,6 +21,7 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')+
 
 biomass <- read_excel(path = "./data/2017_biomass_model.xlsx")
 fishery.status <- read_excel(path = './data/fishery.status.xlsx')
+harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1)
 
 # Regional biomass ----------------
 head(biomass)
