@@ -50,6 +50,10 @@ Need to attempt to establish a B0, and determine the compensatory capacity of th
 ### Figure 2: Regional biomass of surveyed area from 2017 models using current long-term baseline (93-07)
 ![](../results/lt_baseline_2017.png)
 
+### Figure 3: Regional biomass of surveyed area from 2017 models using the average of all years
+![](../results/allyears_2017.png)
+
+
 
 ### Figure 4: Regional biomass of surveyed area from 2017 models showing season open to commercial harvest
 ![](../results/open_closed_17.png)

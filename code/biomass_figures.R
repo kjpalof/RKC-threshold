@@ -66,7 +66,7 @@ fig4 <- ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+
   geom_hline(yintercept = 907431, color = "grey1", linetype = "dashed")
 
 # save plot 
-png('./results/open_closed_17.png', res= 300, width = 7.5, height =4.0, units = "in")
+png('./results/open_closed_17.png', res= 300, width = 7.5, height =5.0, units = "in")
 fig4
 dev.off()
 
