@@ -135,3 +135,21 @@ fig4
 dev.off()
 
 
+### regional figure with closures/ openings --------
+fig4 <- ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
+  geom_point(aes(color = fishery.status, shape = type), size =3) +
+  geom_line(aes(color = type, group = type))+
+  scale_colour_manual(name = "", values = c("grey1", "grey1", "grey1", "red"))+
+  scale_shape_manual(name = "", values = c(16, 1))+
+  
+  ylim(0,1500000) +ggtitle("Survey areas 2017 Model") + ylab("Biomass (lbs)")+ xlab("")+
+  theme(plot.title = element_text(hjust =0.5)) + 
+  scale_x_continuous(breaks = seq(min(1979),max(2019), by =4)) +
+  theme(legend.position = c(0.8,0.7)) + 
+  geom_hline(yintercept = 646753, color = "grey1")+
+  geom_hline(yintercept = 907431, color = "grey1", linetype = "dashed")
+
+# save plot 
+png('./results/open_closed_17.png', res= 300, width = 7.5, height =5.0, units = "in")
+fig4
+dev.off()
