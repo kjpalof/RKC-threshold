@@ -91,12 +91,12 @@ dev.off()
 ### 2017 output long term baseline average -------------
 
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-avg_baseline_long <- gather(avg_baseline, type, pounds, legal_LT:M_LT_125, factor_key = TRUE)
+avg_baseline_long <- gather(avg_baseline, type, pounds, mature_LT:M_LT_125, factor_key = TRUE)
 
 fig3 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("grey1", "green", "red","blue", "gray30", "gray48", "gray48"
+  scale_colour_manual(name = "", values = c("green", "red","blue", "gray30", "gray48", "gray48"
                                             ))+
   scale_shape_manual(name = "", values = c(16, 1), guide = "none")+
   
@@ -114,12 +114,12 @@ dev.off()
 
 ### 2017 output all years average --------------
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-avg_93all_long <- gather(avg_93all, type, pounds, legal_mean:Mmean_125, factor_key = TRUE)
+avg_93all_long <- gather(avg_93all, type, pounds, mature_mean:Mmean_125, factor_key = TRUE)
 
 fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
   geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("grey1", "gray30", "green", "red","blue", "gray48", "gray48"
+  scale_colour_manual(name = "", values = c("grey1", "green", "red","blue", "gray48", "gray48"
   ))+
   scale_shape_manual(name = "", values = c(16, 1), guide = "none")+
   
