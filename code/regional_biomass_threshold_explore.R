@@ -177,7 +177,7 @@ biomass_17a %>%
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
 avg50_baseline_long <- gather(avg50_baseline, type, pounds, mature_LT:M_LT_50, factor_key = TRUE)
 
-ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
+fig5 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
   geom_line(aes(color = type, group = type, lty = type), size =0.85)+
   scale_colour_manual(name = "", values = c("red", "grey1", "gray48", "black"
   ))+
@@ -192,12 +192,32 @@ ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
              show.legend = TRUE)
 
 # save plot 
-png('./results/allyears_2017.png', res= 300, width = 7.5, height = 5.0, units = "in")
-fig4
+png('./results/regional_50_LTbase.png', res= 300, width = 7.5, height = 5.0, units = "in")
+fig5
 dev.off()
 
 
 #### fig 6 regional with 93+ avg ---------
+biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
+avg50_93all_long <- gather(avg50_93all, type, pounds, mature_mean:Mmean_50, factor_key = TRUE)
 
+fig6 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
+  geom_line(aes(color = type, group = type, lty = type), size =0.85)+
+  scale_colour_manual(name = "", values = c("grey1", "red",  "gray48", "black"
+  ))+
+  scale_linetype_manual(values = c(reg_legal = "dashed", reg_mature = "solid", 
+                                   mature_mean = "solid", Mmean_50 = "solid"), guide = "none")+ 
+  ylim(0,2000000) +ggtitle("regional biomass from 2017 model, 93+ average") + 
+  ylab("Biomass (lbs)")+ xlab("Year")+
+  theme(plot.title = element_text(hjust =0.5)) + 
+  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
+  theme(legend.position = c(0.8,0.7)) + 
+  geom_hline(data = avg50_93all_long, aes(yintercept = pounds, group = type, colour = type),
+             show.legend = TRUE)
+
+# save plot 
+png('./results/regional_50_93all.png', res= 300, width = 7.5, height = 5.0, units = "in")
+fig6
+dev.off()
 
 ### Area figures -------------
