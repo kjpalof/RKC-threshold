@@ -52,13 +52,14 @@ biomass_17 %>%
   summarise(reg_legal = sum(legal), reg_mature = sum(mature)) -> biomass_17a
 
 biomass_17a %>% 
-  summarise(legal_mean = mean(reg_legal), mature_mean = mean(reg_mature), 
+  filter(Year >= 1993) %>%
+  summarise(mature_mean = mean(reg_mature), 
             Mmean_50 = 0.50*mature_mean, Mmean_75 = 0.75*mature_mean, 
-            Mmean_125 = 1.25*mature_mean) -> avg_all
+            Mmean_125 = 1.25*mature_mean) -> avg_93all
 
 biomass_17a %>% 
   filter(Year >= 1993 & Year <= 2007) %>%
-  summarise(legal_LT = mean(reg_legal), mature_LT = mean(reg_mature), 
+  summarise(mature_LT = mean(reg_mature), 
             M_LT_50 = 0.50*mature_LT, M_LT_75 = 0.75*mature_LT, 
             M_LT_125 = 1.25*mature_LT) -> avg_baseline
 
@@ -113,7 +114,7 @@ dev.off()
 
 ### 2017 output all years average --------------
 biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-avg_all_long <- gather(avg_all, type, pounds, legal_mean:Mmean_125, factor_key = TRUE)
+avg_93all_long <- gather(avg_93all, type, pounds, legal_mean:Mmean_125, factor_key = TRUE)
 
 fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
   geom_point(aes(color = type, shape = type), size =3) +
@@ -126,7 +127,7 @@ fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+
   theme(plot.title = element_text(hjust =0.5)) + 
   #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
   theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(data = avg_all_long, aes(yintercept = pounds, group = type, colour = type),
+  geom_hline(data = avg_93all_long, aes(yintercept = pounds, group = type, colour = type),
              show.legend = TRUE)
 
 # save plot 
@@ -153,3 +154,6 @@ fig4 <- ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+
 png('./results/open_closed_17.png', res= 300, width = 7.5, height =5.0, units = "in")
 fig4
 dev.off()
+
+
+### Area figures -------------
