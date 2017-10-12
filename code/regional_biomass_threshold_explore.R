@@ -221,3 +221,45 @@ fig6
 dev.off()
 
 ### Area figures -------------
+biomass_17 %>% 
+  select(Year, Location, legal, mature) %>% 
+  group_by(Location, Year) %>% 
+  summarise(legal = sum(legal), mature = sum(mature)) -> biomass_17_area
+
+biomass_17_area %>% 
+  filter(Year >= 1993) %>%
+  group_by(Location) %>% 
+  summarise(mature_mean = mean(mature), 
+            Mmean_50 = 0.50*mature_mean) -> avg50_93area
+
+biomass_17_area %>% 
+  filter(Year >= 1993 & Year <= 2007) %>%
+  group_by(Location) %>%
+  summarise(mature_LT = mean(mature), 
+            M_LT_50 = 0.50*mature_LT) -> avg50_baseline_area
+
+#### fig 7 area specific biomass with LT baseline ----------
+biomass_17_area_long <- gather(biomass_17_area, type, pounds, legal:mature, factor_key = TRUE)
+avg50_baseline_area_long <- gather(avg50_baseline_area, type, pounds, mature_LT:M_LT_50, factor_key = TRUE)
+
+ggplot(biomass_17_area_long, aes(Year, pounds, group = type))+ facet_wrap(~ Location)
+  geom_line(aes(color = type, group = type, lty = type), size =0.85)+
+  scale_colour_manual(name = "", values = c("red", "grey1", "gray48", "black"
+  ))+
+  scale_linetype_manual(values = c(legal = "dashed", mature = "solid", 
+                                   mature_LT = "solid", M_LT_50 = "solid"), guide = "none")+ 
+  ylim(0,2000000) +ggtitle("regional biomass from 2017 model, 93 - 07 baseline") + 
+  ylab("Biomass (lbs)")+ xlab("Year")+
+  theme(plot.title = element_text(hjust =0.5)) + 
+  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
+  theme(legend.position = c(0.8,0.7)) + 
+  geom_hline(data = avg50_baseline_long, aes(yintercept = pounds, group = type, colour = type),
+             show.legend = TRUE)
+
+ggplot(biomass_17_area_long, aes(Year, pounds, group = type))+ facet_wrap(~ Location)+
+  geom_line(aes(color = type))
+  
+# save plot 
+png('./results/regional_50_LTbase.png', res= 300, width = 7.5, height = 5.0, units = "in")
+fig
+dev.off()
