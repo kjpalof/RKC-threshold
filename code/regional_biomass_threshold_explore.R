@@ -9,10 +9,11 @@ source('./code/helper.R')
 
 # Data ---------------
 cur_yr <- 2019
-mr_adjust <- read.csv('./data/adj_final_stock_assessment.csv')
-biomass <- read.csv("./data/biomass.csv") 
+#mr_adjust <- read.csv('./data/adj_final_stock_assessment.csv')
+biomass <- read.csv("./data/biomass_2019.csv") 
 # file has current biomass estimates from each survey area for legal and mature biomass. 
 #   Also has harvest - these all need to be updated from SE assessments 
+fishery.status <- read.csv('C:/Users/kjpalof/Documents/SE_crab_assessments/data/rkc/Juneau/hind_fore_cast_JNU_current.csv')
 
 # old make sure I don't need before I delete
 #reg_biomass <- read_excel(path = "./data/regional_biomass.xlsx")
