@@ -1,27 +1,23 @@
-# K.Palof   8-31-17
+# K.Palof   8-31-17 / 12-3-19
 # Exploration of regional biomass estimates - historic from Sigma Plot file -  'RKC Regional biomass estiamtes 1979-prsent with COMM catch.JNB'
 # Using regional estimates without Port Frederick, only 7 survey areas.
 
-# Objective: determine ideas for biological threshold for opening commericial fishery.
+# Objective: determine ideas for regional biological threshold for opening commericial fishery.
 
-# Load packages -------------
-library(tidyverse)
-library(readxl)
-library(extrafont)
-library(grid)
-library(gridExtra)
-#font_import()
-#loadfonts(device="win")
-windowsFonts(Times=windowsFont("TT Times New Roman"))
+# Load -------------
+source('./code/helper.R')
 
-theme_set(theme_bw(base_size=12,base_family='Times New Roman')+ 
-            theme(panel.grid.major = element_blank(),
-                  panel.grid.minor = element_blank()))
-#Load data ----------------
+# Data ---------------
+cur_yr <- 2019
+mr_adjust <- read.csv('./data/adj_final_stock_assessment.csv')
+biomass <- read.csv("./data/biomass.csv") 
+# file has current biomass estimates from each survey area for legal and mature biomass. 
+#   Also has harvest - these all need to be updated from SE assessments 
 
-reg_biomass <- read_excel(path = "./data/regional_biomass.xlsx")
-biomass_17 <- read_excel(path = "./data/2017_biomass_model.xlsx", sheet = 1)
-harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1)
+# old make sure I don't need before I delete
+#reg_biomass <- read_excel(path = "./data/regional_biomass.xlsx")
+#biomass_17 <- read_excel(path = "./data/2017_biomass_model.xlsx", sheet = 1)
+#harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1)
 
 ### regional figure ------------
 # replication of Figure 2 from 2017 memo
