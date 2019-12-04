@@ -20,6 +20,35 @@ fishery.status <- read.csv('C:/Users/kjpalof/Documents/SE_crab_assessments/data/
 #biomass_17 <- read_excel(path = "./data/2017_biomass_model.xlsx", sheet = 1)
 #harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1)
 
+## clean up -----------------
+fishery.status %>% 
+  select(Year = year, status) %>% 
+  mutate(status = ifelse(status == "PU only", "closed", as.character(status))) %>% #-> fishery.status.update
+# add next line to deal with current year which is TBD in file but will most 
+# likely be closed in current year (2018)
+  mutate(status = ifelse(status == "TBD", "closed", as.character(status))) -> fishery.status.update
+
+
+# regional biomass ----
+biomass %>% 
+  group_by(Year) %>% 
+  summarise(legal = sum(legal.biomass), mature = sum(mature.biomass), 
+            adj_legal = sum(adj.legal), adj_mature = sum(adj.mature)) %>% 
+  as.data.frame() -> regional.b
+fishery.status %>% 
+  select(Year = year, status) %>% 
+  mutate(status = ifelse(status == "PU only", "closed", as.character(status))) -> fishery.status.update
+# add next line to deal with current year which is TBD in file but will most 
+# likely be closed in current year (2018)
+# %>% mutate(status = ifelse(status == "TBD", "closed", as.character(status))) -> fishery.status.update
+
+regional.b %>% 
+  left_join(fishery.status.update) -> regional.b
+write.csv(regional.b, paste0('./results/rkc/Region1/', cur_yr, '/regional_biomass_', cur_yr, '.csv'))
+# use these values for table A1 in stock health document 
+
+
+
 ### regional figure ------------
 # replication of Figure 2 from 2017 memo
 reg_biomass %>% select(Year, legal, mature) ->biomass1
