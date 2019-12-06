@@ -16,6 +16,7 @@ library(anytime)
 library(RColorBrewer)
 library(cowplot)
 library(ggridges)
+library(scales)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
