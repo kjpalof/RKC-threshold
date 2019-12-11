@@ -23,10 +23,13 @@ data %>%
   gather("type", "value", 3:4) %>% 
   ggplot(aes(pct, value, group = type)) +
   geom_line(aes(colour = type, group = type, linetype = type), lwd = 1)+
-  ylim(0, 0.50) +
+  ylim(0, 0.40) +
   scale_x_continuous(labels = scales::percent) +
   xlab("Mature Biomass / Avg Mature Biomass") + 
-  ylab("Harvest Rate")
+  ylab("Harvest Rate") -> hcr_fig
+ggsave('./figures/harvest_control_rule_options.png', hcr_fig,  
+       dpi = 600, width = 10.5, height = 5.5)
+
 # HCR option 1 ------
 # two slopes 
 
