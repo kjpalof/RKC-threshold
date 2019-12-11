@@ -33,28 +33,32 @@ data %>%
   mutate(option1 = ifelse(pct <=.20, 0, ifelse(pct >=1.00, .20, 0.10)), 
          option1 = ifelse(pct > .20 & pct <= .50, (m*pct - .20*m), option1), 
          option1 = ifelse(pct >0.50 & pct <1.00, (m2*pct - .50*m2 + 0.10), option1), 
-         option2 = ifelse(pct <= 0.50, 0, ifelse(pct >=1.00, .20, 0.10)), 
+         option2 = ifelse(pct < 0.50, 0, ifelse(pct >=1.00, .20, 0.10)), 
          option2 = ifelse(pct > 0.50 & pct <1.00, (m2*pct - .50*m2 + 0.10), option2), 
          option3 = ifelse(pct <= 0.50, 0, ifelse(pct >=1.00, 0.20, (m3*pct - 0.50*m3)))) %>% 
   gather("Harvest Strategy", "value", 3:5) %>% 
   ggplot(aes(pct, value, group = `Harvest Strategy`)) +
   geom_line(aes(colour = `Harvest Strategy`, group = `Harvest Strategy`, linetype = `Harvest Strategy`), lwd = 1)+
-  scale_color_manual (values = cbPalette) +
-  ylim(0, 0.40) +
+  scale_color_manual (values = c(cbPalette[1], "darkorchid4", cbPalette[3])) +
   scale_x_continuous(labels = scales::percent, breaks = seq(0, 1.5, 0.10)) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 0.40)) +
   #xlab("Mature Biomass / Avg Mature Biomass") + 
   xlab(expression("Mature Male Biomass"[cur_yr]/"Mature Male Biomass"[average])) +
   ylab("Harvest Rate") +
   
   geom_vline(xintercept = 1.00, lwd = 0.75, colour = "green4") +
   geom_text(aes((1.00), 0.20, 
-                label = paste0("Mature Target Reference Point (avg 1993-2007)"), vjust = -1, hjust = 0.15)) +
+                label = paste0("Mature Target Reference Point"), vjust = -1, hjust = -0.05)) +
+  geom_text(aes((1.15), 0.174, 
+                label = paste0("(avg MMB 1993-2007)"), vjust = -1, hjust = 0.15)) +
   geom_vline(xintercept = 0.50, lwd = 0.75, linetype = "dashed",color = "darkorange1") +
   geom_text(aes((0.50), 0.17, 
                 label = ("Trigger (50% of target)"), vjust = -1, hjust = -0.05)) +
   geom_vline(xintercept = 0.20, lwd = 0.75, color = "red") +
   geom_text(aes(0.20, 0.12, 
-                label = ("Limit Reference Point (20% of target)"), vjust = -1, hjust = 0.14)) -> hcr_fig
+                label = ("Limit"), vjust = -1, hjust = 2.20)) +
+  geom_text(aes(0.20, 0.115, 
+                label = ("(20% of target)"), vjust = 0.10, hjust = 1.04)) -> hcr_fig
 ggsave('./figures/harvest_control_rule_options.png', hcr_fig,  
        dpi = 600, width = 10.5, height = 5.5)
 
