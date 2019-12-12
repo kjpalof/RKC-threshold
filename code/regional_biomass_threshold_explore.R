@@ -110,7 +110,7 @@ regional.b %>%
   geom_line(aes(colour = type, group = type, linetype = type))+
   geom_point(aes(colour = type, shape = status, fill = type), size =3) +
   scale_colour_manual(name = "", values = c("black", "grey60", "black", "grey60"), 
-                      guide = FALSE)+
+                      labels = c("Legal Biomass", "Mature Biomass"))+
   scale_shape_manual(name = "Fishery Status", values = c(25, 21, 8))+
   scale_linetype_manual(name = "", values = c("solid", "dashed", "solid", "dashed"), 
                         guide = FALSE) +
@@ -130,12 +130,11 @@ regional.b %>%
   #ggtitle("Biomass of surveyed areas for Southeast Alaska red king crab") + 
   theme(axis.text.x = element_text(vjust = 0.50)) -> p1
   
-  
-p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "green") +
+p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "green4") +
   geom_text(aes((str_yr + 7), MATURE_reg_base_MR_2$pounds, 
                 label = paste0("Mature Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
   
-  geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
+  geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
   geom_text(aes((str_yr + 12), MATURE_reg_base_MR_2$fifty, 
                 label = ("Trigger 50% of target)"), vjust = -1, hjust = 0.05)) +
   
