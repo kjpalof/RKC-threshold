@@ -1,6 +1,7 @@
-# K.Palof   8-31-17 / 12-3-19
+# K.Palof   8-31-17 / 12-3-19 / 6-17-2020
 # Exploration of regional biomass estimates - historic from Sigma Plot file -  'RKC Regional biomass estiamtes 1979-prsent with COMM catch.JNB'
 # Using regional estimates without Port Frederick, only 7 survey areas.
+# current biomass estimates from each area use 2019 model output
 
 # Objective: determine ideas for regional biological threshold for opening commericial fishery.
 
@@ -15,12 +16,10 @@ biomass <- read.csv("./data/biomass_2019.csv")
 #   Also has harvest - these all need to be updated from SE assessments 
 fishery.status <- read.csv('C:/Users/kjpalof/Documents/SE_crab_assessments/data/rkc/Juneau/hind_fore_cast_JNU_current.csv')
 
-# old make sure I don't need before I delete
-#reg_biomass <- read_excel(path = "./data/regional_biomass.xlsx")
-#biomass_17 <- read_excel(path = "./data/2017_biomass_model.xlsx", sheet = 1)
 #harvest <- read_excel(path = "./data/harvest.xlsx", sheet = 1)
+# harvest is included in the biomass file - this is done during the RKC assessment
 
-## clean up -----------------
+## commercial fishery status -----------------
 fishery.status %>% 
   select(Year = year, status) %>% 
   mutate(status = ifelse(status == "PU only", "closed", as.character(status))) %>% #-> fishery.status.update
@@ -89,7 +88,7 @@ regional.b %>%
         axis.text = element_text(size = 14)) +
   theme(axis.text.x = element_text(vjust = 0.50)) +
   geom_text(data = reg_baseline_MR, aes(x = st_yr, y = pounds, label = label), 
-            hjust = -0.05, vjust = 1.5, nudge_y = 0.05, size = 3.5) +
+            hjust = -0.05, vjust = 1.5, nudge_y = 0.05, size = 3.5) #+
   ggsave(paste0('./figures/rkc/', cur_yr, '/MRregional_biomass2_', cur_yr, '.png'), dpi = 800, width = 7.5, height = 5.5)
 
 
@@ -145,7 +144,7 @@ p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "g
   geom_vline(xintercept = end_yr, linetype = "dashed") +
   annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") -> fig1
   #geom_point(size = 3, color = "dodgerblue") 
-ggsave('./figures/regional_levels.png', fig1,  
+ggsave('./figures/regional_levels1.png', fig1,  
        dpi = 600, width = 10.5, height = 5.5)
   
 
