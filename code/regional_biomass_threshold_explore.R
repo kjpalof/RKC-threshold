@@ -37,11 +37,11 @@ biomass %>%
 
 regional.b %>% 
   left_join(fishery.status.update) -> regional.b
- #write.csv(regional.b, paste0('./results/rkc/Region1/', cur_yr, '/regional_biomass_', cur_yr, '.csv'))
-# use these values for table A1 in stock health document 
+# write.csv(regional.b, paste0('./results/rkc/Region1/', cur_yr, '/regional_biomass_', cur_yr, '.csv'))
+#     use these values for table A1 in stock health document 
 
 
-# baseline ---
+# baseline -------
 # 1993 - 2007 baseline years
 regional.b %>% 
   filter(Year >= 1993 & Year <= 2007) %>% 
@@ -55,9 +55,11 @@ regional.b %>%
 reg_baseline[1:2, ] ->  reg_baseline_CSA
 reg_baseline[3:4, ] ->  reg_baseline_MR
 
+
+## Figures for documents ------------------------------
 # Figure 2 **CLOSED** regional biomass M/R adjusted biomass---------
-# should have 2018 model with longterm baselines (1993-2007) and closure status. 
-#   also show 2018 forecast as distinct from model output
+# should have current year's model with longterm baselines (1993-2007) and closure status. 
+#   also show current year's forecast as distinct from model output
 regional.b %>% 
   select(Year, adj_legal, adj_mature, status) %>%
   gather(type, pounds, adj_legal:adj_mature, factor_key = TRUE) %>%
@@ -88,11 +90,12 @@ regional.b %>%
         axis.text = element_text(size = 14)) +
   theme(axis.text.x = element_text(vjust = 0.50)) +
   geom_text(data = reg_baseline_MR, aes(x = st_yr, y = pounds, label = label), 
-            hjust = -0.05, vjust = 1.5, nudge_y = 0.05, size = 3.5) #+
-  ggsave(paste0('./figures/rkc/', cur_yr, '/MRregional_biomass2_', cur_yr, '.png'), dpi = 800, width = 7.5, height = 5.5)
+            hjust = -0.05, vjust = 1.5, nudge_y = 0.05, size = 3.5) +
+  ggsave(paste0('./figures/', cur_yr, '/MRregional_biomass2_', cur_yr, '.png'), dpi = 800, width = 7.5, height = 5.5)
 
 
-### mark-recap regional plan ---------
+### mark-recap regional biological threhold plan  ---------
+# uses mark-recaputure estimates and current baseline years 1993 to 2007
 reg_baseline_MR %>% 
   filter(type == "adj.mature.base") %>% 
   mutate(fifty = pounds*.5, twenty = pounds*.2) %>% 
@@ -144,207 +147,83 @@ p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "g
   geom_vline(xintercept = end_yr, linetype = "dashed") +
   annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") -> fig1
   #geom_point(size = 3, color = "dodgerblue") 
-ggsave('./figures/regional_levels1.png', fig1,  
+ggsave(paste0('./figures/regional_levels1_', cur_yr, '.png'), fig1,  
        dpi = 600, width = 10.5, height = 5.5)
   
 
 
-### regional figure ------------
-# replication of Figure 2 from 2017 memo
-reg_biomass %>% select(Year, legal, mature) ->biomass1
-reg_biomass1_long <- gather(biomass1, type, pounds, legal:mature, factor_key = TRUE)
+### option 2 mark-recap regional biological threhold plan  ---------
+# uses mark-recaputure estimates and call years -1, so 1979 to 2018
+# 1993 - 2007 baseline years
+regional.b %>% 
+  #filter(Year >= 1993 & Year <= 2007) %>% 
+  summarise(legal_baseline = mean(legal), mature_baseline = mean(mature), 
+            adj.legal_base = mean(adj_legal), adj.mature.base = mean(adj_mature)) %>% 
+  as.data.frame() %>% 
+  gather(type, pounds, factor_key = TRUE) %>% 
+  mutate(st_yr = 2007, label = c("CSA Legal (1993-2007)", "CSA Mature (1993-2007)", 
+                                 "Legal (1993-2007)", "Mature (1993-2007)")) ->reg_baseline
 
-ggplot(reg_biomass1_long, aes(Year, pounds, group = type))+ 
-  geom_point(aes(color = type, shape = type), size =3) +
-  geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("grey1", "grey1"))+
-  scale_shape_manual(name = "", values = c(16, 1))+
+reg_baseline[1:2, ] ->  reg_baseline_CSA
+reg_baseline[3:4, ] ->  reg_baseline_MR
+
+reg_baseline_MR %>% 
+  filter(type == "adj.mature.base") %>% 
+  mutate(fifty = pounds*.5, twenty = pounds*.2) %>% 
+  as.data.frame() -> MATURE_reg_base_MR_2
+
+str_yr = 1993
+end_yr = 2007
+
+regional.b %>% 
+  select(Year, adj_legal, adj_mature, status) %>%
+  gather(type, pounds, adj_legal:adj_mature, factor_key = TRUE) %>%
+  mutate(status = replace(status, which(status == "TBD"), "closed")) %>% # can replace the TBD with open or closed
+  ggplot(aes(Year, pounds, group = type)) +
+  geom_line(aes(colour = type, group = type, linetype = type))+
+  geom_point(aes(colour = type, shape = status, fill = type), size =3) +
+  scale_colour_manual(name = "", values = c("black", "grey60", "black", "grey60"), 
+                      labels = c("Legal Biomass", "Mature Biomass"))+
+  scale_shape_manual(name = "Fishery Status", values = c(25, 21, 8))+
+  scale_linetype_manual(name = "", values = c("solid", "dashed", "solid", "dashed"), 
+                        guide = FALSE) +
+  scale_fill_manual(name = "", values = c("black", "gray75"), 
+                    guide = FALSE) +
+  scale_y_continuous(labels = comma, limits = c(0,(max(regional.b$adj_mature,
+                                                       na.rm = TRUE) + 100000)),
+                     breaks= seq(min(0), max(max(regional.b$adj_mature, na.rm = TRUE) +100000), 
+                                 by = 500000)) +
+  scale_x_continuous(breaks = seq(min(1975),max(max(regional.b$Year) + 1), by = 2)) +
+  ylab("Biomass (lb)") + 
+  theme(plot.title = element_text(hjust =0.5)) +
+  theme(legend.position = c(0.825,0.793), legend.title = element_text(size = 9), 
+        legend.text = element_text(size = 14), axis.text.x = element_text(angle = 45), 
+        axis.title = element_text(size = 14, face = "bold"), 
+        axis.text = element_text(size = 14)) +
+  #ggtitle("Biomass of surveyed areas for Southeast Alaska red king crab") + 
+  theme(axis.text.x = element_text(vjust = 0.50)) -> p1
+
+p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "green4") +
+  geom_text(aes((str_yr + 7), MATURE_reg_base_MR_2$pounds, 
+                label = paste0("Mature Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
   
-  ylim(0,2000000) +ggtitle("regional biomass") + ylab("Biomass (lbs)")+ xlab("Year")+
-  theme(plot.title = element_text(hjust =0.5)) + 
-  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
-  theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(yintercept = 761292, color = "grey1")+
-  geom_hline(yintercept = 1117286, color = "grey1", linetype = "dashed")
-
-reg_biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(legal))
-reg_biomass %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(mature))
-
-
-### 2017 model output average summary -----
-biomass_17 %>% 
-  select(Year, legal, mature) %>% 
-  group_by(Year) %>% 
-  summarise(reg_legal = sum(legal), reg_mature = sum(mature)) -> biomass_17a
-
-biomass_17a %>% 
-  filter(Year >= 1993) %>%
-  summarise(mature_mean = mean(reg_mature), 
-            Mmean_50 = 0.50*mature_mean, Mmean_75 = 0.75*mature_mean, 
-            Mmean_125 = 1.25*mature_mean) -> avg_93all
-
-biomass_17a %>% 
-  filter(Year >= 1993 & Year <= 2007) %>%
-  summarise(mature_LT = mean(reg_mature), 
-            M_LT_50 = 0.50*mature_LT, M_LT_75 = 0.75*mature_LT, 
-            M_LT_125 = 1.25*mature_LT) -> avg_baseline
-
-### 2017 model output figure 2-------
-# has long term averages from 1993-2007
-biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-
-fig1<- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
-  geom_point(aes(color = type, shape = type), size =3) +
-  geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("grey1", "grey1"))+
-  scale_shape_manual(name = "", values = c(16, 1))+
+  geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
+  geom_text(aes((str_yr + 12), MATURE_reg_base_MR_2$fifty, 
+                label = ("Trigger 50% of target)"), vjust = -1, hjust = 0.05)) +
   
-  ylim(0,2000000) +ggtitle("regional biomass from 2017 model") + ylab("Biomass (lbs)")+ xlab("Year")+
-  theme(plot.title = element_text(hjust =0.5)) + 
-  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
-  theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(yintercept = 646753.4, color = "grey1")+
-  geom_hline(yintercept = 907430.5, color = "grey1", linetype = "dashed") 
-  
-biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_legal))
-biomass_17a %>% filter(Year >= 1993 & Year <= 2007) %>% summarise(mean(reg_mature))
-
-# save plot 
-png('./results/regional_2017.png', res= 300, width = 7.5, height =4.0, units = "in")
-fig1
-dev.off()
-
-### 2017 output long term baseline average -------------
-
-biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-avg_baseline_long <- gather(avg_baseline, type, pounds, mature_LT:M_LT_125, factor_key = TRUE)
-
-fig3 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
-  geom_point(aes(color = type, shape = type), size =3) +
-  geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("green", "red","blue", "gray30", "gray48", "gray48"
-                                            ))+
-  scale_shape_manual(name = "", values = c(16, 1), guide = "none")+
-  
-  ylim(0,2000000) +ggtitle("regional biomass from 2017 model, 93-07 baseline") + ylab("Biomass (lbs)")+ xlab("Year")+
-  theme(plot.title = element_text(hjust =0.5)) + 
-  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
-  theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(data = avg_baseline_long, aes(yintercept = pounds, group = type, colour = type),
-             show.legend = TRUE)
-      
-# save plot 
-png('./results/lt_baseline_2017.png', res= 300, width = 7.5, height = 5.0, units = "in")
-fig3
-dev.off()
-
-### 2017 output all years average --------------
-biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-avg_93all_long <- gather(avg_93all, type, pounds, mature_mean:Mmean_125, factor_key = TRUE)
-
-fig4 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
-  geom_point(aes(color = type, shape = type), size =3) +
-  geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("grey1", "green", "red","blue", "gray48", "gray48"
-  ))+
-  scale_shape_manual(name = "", values = c(16, 1), guide = "none")+
-  
-  ylim(0,2000000) +ggtitle("regional biomass from 2017 model") + ylab("Biomass (lbs)")+ xlab("Year")+
-  theme(plot.title = element_text(hjust =0.5)) + 
-  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
-  theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(data = avg_93all_long, aes(yintercept = pounds, group = type, colour = type),
-             show.legend = TRUE)
-
-# save plot 
-png('./results/allyears_2017.png', res= 300, width = 7.5, height = 5.0, units = "in")
-fig4
-dev.off()
+  geom_hline(yintercept = MATURE_reg_base_MR_2$twenty, lwd = 0.5, color = "red") +
+  geom_text(aes((str_yr - 5), MATURE_reg_base_MR_2$twenty, 
+                label = ("Limit Reference Point 20% of target)"), vjust = -1, hjust = 0.05)) +
+  geom_vline(xintercept = str_yr, linetype = "dashed") +
+  geom_vline(xintercept = end_yr, linetype = "dashed") +
+  annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") -> fig1
+#geom_point(size = 3, color = "dodgerblue") 
+ggsave(paste0('./figures/regional_levels1_', cur_yr, '.png'), fig1,  
+       dpi = 600, width = 10.5, height = 5.5)
 
 
-### regional figure with closures/ openings --------
-fig4 <- ggplot(survey_area_biom_long, aes(Year, pounds, group = type))+ 
-  geom_point(aes(color = fishery.status, shape = type), size =3) +
-  geom_line(aes(color = type, group = type))+
-  scale_colour_manual(name = "", values = c("grey1", "grey1", "grey1", "red"))+
-  scale_shape_manual(name = "", values = c(16, 1))+
-  
-  ylim(0,1500000) +ggtitle("Survey areas 2017 Model") + ylab("Biomass (lbs)")+ xlab("")+
-  theme(plot.title = element_text(hjust =0.5)) + 
-  scale_x_continuous(breaks = seq(min(1979),max(2019), by =4)) +
-  theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(yintercept = 646753, color = "grey1")+
-  geom_hline(yintercept = 907431, color = "grey1", linetype = "dashed")
-
-# save plot 
-png('./results/open_closed_17.png', res= 300, width = 7.5, height =5.0, units = "in")
-fig4
-dev.off()
 
 
-### 50% figures ------
-### regional -------
-biomass_17 %>% 
-  select(Year, legal, mature) %>% 
-  group_by(Year) %>% 
-  summarise(reg_legal = sum(legal), reg_mature = sum(mature)) -> biomass_17a
-
-biomass_17a %>% 
-  filter(Year >= 1993) %>%
-  summarise(mature_mean = mean(reg_mature), 
-            Mmean_50 = 0.50*mature_mean) -> avg50_93all
-
-biomass_17a %>% 
-  filter(Year >= 1993 & Year <= 2007) %>%
-  summarise(mature_LT = mean(reg_mature), 
-            M_LT_50 = 0.50*mature_LT) -> avg50_baseline
-
-#### fig 5 regional with LT baseline ----------
-biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-avg50_baseline_long <- gather(avg50_baseline, type, pounds, mature_LT:M_LT_50, factor_key = TRUE)
-
-fig5 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
-  geom_line(aes(color = type, group = type, lty = type), size =0.85)+
-  scale_colour_manual(name = "", values = c("red", "grey1", "gray48", "black"
-  ))+
-  scale_linetype_manual(values = c(reg_legal = "dashed", reg_mature = "solid", 
-                                   mature_LT = "solid", M_LT_50 = "solid"), guide = "none")+ 
-  ylim(0,2000000) +ggtitle("regional biomass from 2017 model, 93 - 07 baseline") + 
-  ylab("Biomass (lbs)")+ xlab("Year")+
-  theme(plot.title = element_text(hjust =0.5)) + 
-  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
-  theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(data = avg50_baseline_long, aes(yintercept = pounds, group = type, colour = type),
-             show.legend = TRUE)
-
-# save plot 
-png('./results/regional_50_LTbase.png', res= 300, width = 7.5, height = 5.0, units = "in")
-fig5
-dev.off()
-
-
-#### fig 6 regional with 93+ avg ---------
-biomass_17a_long <- gather(biomass_17a, type, pounds, reg_legal:reg_mature, factor_key = TRUE)
-avg50_93all_long <- gather(avg50_93all, type, pounds, mature_mean:Mmean_50, factor_key = TRUE)
-
-fig6 <- ggplot(biomass_17a_long, aes(Year, pounds, group = type))+ 
-  geom_line(aes(color = type, group = type, lty = type), size =0.85)+
-  scale_colour_manual(name = "", values = c("grey1", "red",  "gray48", "black"
-  ))+
-  scale_linetype_manual(values = c(reg_legal = "dashed", reg_mature = "solid", 
-                                   mature_mean = "solid", Mmean_50 = "solid"), guide = "none")+ 
-  ylim(0,2000000) +ggtitle("regional biomass from 2017 model, 93+ average") + 
-  ylab("Biomass (lbs)")+ xlab("Year")+
-  theme(plot.title = element_text(hjust =0.5)) + 
-  #scale_x_continuous(breaks = seq(min(1993),max(2017), by =2)) +
-  theme(legend.position = c(0.8,0.7)) + 
-  geom_hline(data = avg50_93all_long, aes(yintercept = pounds, group = type, colour = type),
-             show.legend = TRUE)
-
-# save plot 
-png('./results/regional_50_93all.png', res= 300, width = 7.5, height = 5.0, units = "in")
-fig6
-dev.off()
 
 ### Area figures -------------
 biomass_17 %>% 
