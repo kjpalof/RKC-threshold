@@ -53,7 +53,7 @@ Use the biomass estimates over time to set green, yellow, and red levels that wo
 ![](../figures/regional_levels.png)
 
 ### Figure 3: Regional biomass of surveyed area from 2017 models using the average of all years
-![](../results/allyears_2017.png)
+![](../figures/regional_levels2_2019.png)
 
 
 
