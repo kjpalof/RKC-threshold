@@ -153,8 +153,9 @@ ggsave(paste0('./figures/regional_levels1_', cur_yr, '.png'), fig1,
 
 
 ### option 2 mark-recap regional biological threhold plan  ---------
-# uses mark-recaputure estimates and call years -1, so 1979 to 2018
-# 1993 - 2007 baseline years
+# uses mark-recaputure estimates and all years -1, so 1979 to 2018
+# all years NOT baseline years
+
 regional.b %>% 
   #filter(Year >= 1993 & Year <= 2007) %>% 
   summarise(legal_baseline = mean(legal), mature_baseline = mean(mature), 
@@ -171,9 +172,9 @@ reg_baseline_MR %>%
   filter(type == "adj.mature.base") %>% 
   mutate(fifty = pounds*.5, twenty = pounds*.2) %>% 
   as.data.frame() -> MATURE_reg_base_MR_2
-
-str_yr = 1993
-end_yr = 2007
+# update to include all years -1
+str_yr = 1979
+end_yr = 2018
 
 regional.b %>% 
   select(Year, adj_legal, adj_mature, status) %>%
@@ -204,7 +205,7 @@ regional.b %>%
   theme(axis.text.x = element_text(vjust = 0.50)) -> p1
 
 p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "green4") +
-  geom_text(aes((str_yr + 7), MATURE_reg_base_MR_2$pounds, 
+  geom_text(aes((str_yr + 22), MATURE_reg_base_MR_2$pounds, 
                 label = paste0("Mature Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
   
   geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
@@ -212,13 +213,13 @@ p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "g
                 label = ("Trigger 50% of target)"), vjust = -1, hjust = 0.05)) +
   
   geom_hline(yintercept = MATURE_reg_base_MR_2$twenty, lwd = 0.5, color = "red") +
-  geom_text(aes((str_yr - 5), MATURE_reg_base_MR_2$twenty, 
+  geom_text(aes((str_yr - 2), MATURE_reg_base_MR_2$twenty, 
                 label = ("Limit Reference Point 20% of target)"), vjust = -1, hjust = 0.05)) +
   geom_vline(xintercept = str_yr, linetype = "dashed") +
   geom_vline(xintercept = end_yr, linetype = "dashed") +
   annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") -> fig1
 #geom_point(size = 3, color = "dodgerblue") 
-ggsave(paste0('./figures/regional_levels1_', cur_yr, '.png'), fig1,  
+ggsave(paste0('./figures/regional_levels2_', cur_yr, '.png'), fig1,  
        dpi = 600, width = 10.5, height = 5.5)
 
 
