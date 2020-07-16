@@ -9,7 +9,7 @@
 source('./code/helper.R')
 
 # Data ---------------
-cur_yr <- 2019
+cur_yr <- 2020
 
 harvest1 <- read_excel("./data/RKC Harvest for Katie 78.79-96.97.xlsx", sheet = 1)
 harvest2 <- read_excel("./data/RKC Harvest for Katie 97.98-17.18.xlsx", sheet = 1)
@@ -28,5 +28,32 @@ fishery.status %>%
 # data clean-up ------
 harvest1 %>% 
   as.data.frame() %>% 
-  select(year = YEAR, tkt_no = TICKET_NO, cfec = CFEC_NO, catch_date = CATCH_DATE, 
-         )
+  select(year = YEAR, tkt_no = TICKET_NO, cfec = CFEC_NO, catch_d = CATCH_DATE, 
+         stat_area = STAT_AREA, species = SPECIES_CODE, numbers = NUMBERS, 
+         lbs = POUNDS, pots = POTS) -> harvest1
+harvest2 %>% 
+  as.data.frame() %>% 
+  select(year = YEAR, tkt_no = TICKET_NO, cfec = CFEC_NO, catch_d = CATCH_DATE, 
+         stat_area = STAT_AREA, species = SPECIES_CODE, numbers = NUMBERS, 
+         lbs = POUNDS, pots = POTS) -> harvest2
+
+harvest1 %>% 
+  bind_rows(harvest2) -> harvest
+
+
+# summary by year ----------
+harvest %>% 
+  group_by(year) %>% 
+  summarise(num = sum(numbers, na.rm = TRUE), pounds = sum(lbs, na.rm = TRUE)) -> by_year
+
+fishery.status.update %>% 
+  left_join(by_year) %>% 
+  mutate(lbs = as.numeric(ifelse(status == "closed", "NA", pounds))) -> by_year_status
+
+by_year_status %>% 
+  ggplot(aes(year, lbs)) +
+  geom_bar(stat = "identity") 
+
+
+
+
