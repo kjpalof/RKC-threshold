@@ -50,9 +50,19 @@ fishery.status.update %>%
   left_join(by_year) %>% 
   mutate(lbs = as.numeric(ifelse(status == "closed", "NA", pounds))) -> by_year_status
 
+write.csv(by_year_status, ('./results/harvest_by_year.csv'), 
+          row.names = FALSE)
+
 by_year_status %>% 
   ggplot(aes(year, lbs)) +
-  geom_bar(stat = "identity") 
+  geom_bar(stat = "identity") +
+  scale_y_continuous(labels = comma, limits = c(0,(max(regional.b$adj_mature,
+                                                       na.rm = TRUE) + 100000)),
+                     breaks= seq(min(0), max(max(regional.b$adj_mature, na.rm = TRUE) +100000), 
+                                 by = 500000)) +
+  scale_x_continuous(breaks = seq(min(1975),max(max(regional.b$Year) + 1), by = 2)) +
+  #ggtitle("Biomass of surveyed areas for Southeast Alaska red king crab") + 
+  ylab("pounds (lb)") 
 
 
 
