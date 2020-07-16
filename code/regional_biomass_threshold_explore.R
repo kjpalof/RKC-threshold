@@ -223,6 +223,73 @@ ggsave(paste0('./figures/regional_levels2_', cur_yr, '.png'), fig1,
        dpi = 600, width = 10.5, height = 5.5)
 
 
+### harvest with mark-recap regional biological threhold plan  ---------
+# uses mark-recaputure estimates and current baseline years 1993 to 2007
+reg_baseline_MR %>% 
+  filter(type == "adj.mature.base") %>% 
+  mutate(fifty = pounds*.5, twenty = pounds*.2) %>% 
+  as.data.frame() -> MATURE_reg_base_MR_2
+
+# if including harvest data - run harvest.R first to get a file for here
+harvest_r <- read.csv("./results/harvest_by_year.csv") 
+harvest_r %>% 
+  select(Year = year, lbs) -> harvest_r
+
+regional.b %>% 
+  right_join(harvest_r) -> regional.b2
+
+str_yr = 1993
+end_yr = 2007
+
+regional.b2 %>% 
+  filter(Year <= 2019) %>% 
+  select(Year, adj_legal, adj_mature, status, lbs) %>%
+  gather(type, pounds, adj_legal:adj_mature, factor_key = TRUE) %>%
+  mutate(status = replace(status, which(status == "TBD"), "closed")) %>% # can replace the TBD with open or closed
+  ggplot(aes(Year, pounds, group = type)) +
+  geom_line(aes(colour = type, group = type, linetype = type))+
+  geom_point(aes(colour = type, shape = status, fill = type), size =3) +
+  scale_colour_manual(name = "", values = c("black", "grey60", "black", "grey60"), 
+                      labels = c("Legal Biomass", "Mature Biomass"))+
+  scale_shape_manual(name = "Fishery Status", values = c(25, 21, 8))+
+  scale_linetype_manual(name = "", values = c("solid", "dashed", "solid", "dashed"), 
+                        guide = FALSE) +
+  scale_fill_manual(name = "", values = c("black", "gray75"), 
+                    guide = FALSE) +
+  scale_y_continuous(labels = comma, limits = c(0,(max(regional.b$adj_mature,
+                                                       na.rm = TRUE) + 100000)),
+                     breaks= seq(min(0), max(max(regional.b$adj_mature, na.rm = TRUE) +100000), 
+                                 by = 500000)) +
+  scale_x_continuous(breaks = seq(min(1975),max(max(regional.b$Year) + 1), by = 2)) +
+  ylab("Biomass (lb)") + 
+  theme(plot.title = element_text(hjust =0.5)) +
+  theme(legend.position = c(0.825,0.793), legend.title = element_text(size = 9), 
+        legend.text = element_text(size = 14), axis.text.x = element_text(angle = 45), 
+        axis.title = element_text(size = 14, face = "bold"), 
+        axis.text = element_text(size = 14)) +
+  #ggtitle("Biomass of surveyed areas for Southeast Alaska red king crab") + 
+  theme(axis.text.x = element_text(vjust = 0.50)) -> p1
+
+p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "green4") +
+  geom_text(aes((str_yr + 7), MATURE_reg_base_MR_2$pounds, 
+                label = paste0("Mature Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+  
+  geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
+  geom_text(aes((str_yr + 12), MATURE_reg_base_MR_2$fifty, 
+                label = ("Trigger 50% of target)"), vjust = -1, hjust = 0.05)) +
+  
+  geom_hline(yintercept = MATURE_reg_base_MR_2$twenty, lwd = 0.5, color = "red") +
+  geom_text(aes((str_yr - 5), MATURE_reg_base_MR_2$twenty, 
+                label = ("Limit Reference Point 20% of target)"), vjust = -1, hjust = 0.05)) +
+  geom_vline(xintercept = str_yr, linetype = "dashed") +
+  geom_vline(xintercept = end_yr, linetype = "dashed") +
+  annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+  geom_col(aes(x = Year, y = lbs), color = "grey", fill = "grey45")-> fig1
+#geom_point(size = 3, color = "dodgerblue") 
+ggsave(paste0('./figures/harvest_w_regional_levels1_', cur_yr, '.png'), fig1,  
+       dpi = 600, width = 10.5, height = 5.5)
+
+
 
 
 
