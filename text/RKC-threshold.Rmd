@@ -1,7 +1,7 @@
 ---
 title: "RKC threshold"
 author: "Katie Palof"
-date: "June 20, 2020"
+date: "July 21, 2020"
 output:
   word_document: 
    reference_docx: style_settings.docx
@@ -38,7 +38,7 @@ This is hard to use due to the sparse nature of the fishery.  There has been a f
 decade which makes it hard to use yield or harvest as an indicator of population status or condition.
 
 #### Biological reference points (biomass-based)
-Could use a sliding scale to reduce fishing mortality as stock declines.
+One method would be to use a sliding scale to reduce fishing mortality as stock declines.
 Need to attempt to establish a B0, and determine the compensatory capacity of the stock. This is fairly hard to do without an idea of B0 or the virgin biomass (biomass prior to fishing pressure).
     
 #### Stoplight method based on biological threshold
@@ -48,7 +48,7 @@ As an example, if the current year's biomass estimate was above the long-term av
 
 Federally managed crab stocks in western Alaska use a managment framework where a stock is considered "overfished" when the current year's biomass is below 50% of the average (below the orange/yellow line). At this point a rebuilding plan is put into place to ensure that the stock rebuilds to average levels, this does not necessarily mean the directed fishery but most often that is the case. 
 
-
+Figure 4 below shows three examples of harvest control rules that could be applied to this method. Option 1 allows for maximum harvest when the stock is above the mature target reference point (long-term average), then decreases between 20 to 10 % linearly when the stock is between the mature target reference point and the trigger reference point, and then makes further reductions when the stock is between the trigger and limit reference points. The fishery would be closed is the current stock biomass was below 20% of the mature target reference point. This options is the most risky or least conservative. Option 2 is similar to option 1 at high biomass but the fishery would be closed when the stock is below the Trigger reference point. Option 3 is the most conservative, since it linearly decreases the harvest from 20 to 0 % between the mature target reference point and the trigger reference point. These options are just examples of how a biological threshold or target reference point could be used for setting a harvest control rule. 
 
 
 ## Figures
@@ -64,8 +64,11 @@ Figure 2: Regional biomass of surveyed area from 2019 models using current long-
 Figure 3: Regional biomass of surveyed area from 2019 models using the average of all years
 ![](../figures/regional_levels2_2019.png)
 
+Figure 4: Harvest control rule examples using a stop-light method with a biological threshold.
+![](../figures/harvest_control_rule_options.png)
 
-Figure 4: Regional biomass of surveyed area from 2019 models and commercial harvest when open.
+
+Figure 5: Regional biomass of surveyed area from 2019 models and commercial harvest when open.
 ![](../figures/harvest_w_regional_levels1_2019.png)
 
 
