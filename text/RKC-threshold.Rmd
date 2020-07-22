@@ -33,9 +33,6 @@ Establishing biological reference points for this fishery would aid in more effe
 
 ## Methods
 
-### Estimating biological threholds
-In most cases a biological threhold is based on average biomass or recruitment for a period of time that is considered "normal" or typical for the stock. In many crab stocks this period of time is the entire time series minus the current year (here 1979 - 2018). However, there have also been adjustments to this time frame based on regime shifts, survey methodology changes, and general knowledge of the stock and the environment. 
-
 #### Average yield
 This is hard to use due to the sparse nature of the fishery.  There has been a fishery about once a 
 decade which makes it hard to use yield or harvest as an indicator of population status or condition.
@@ -43,9 +40,12 @@ decade which makes it hard to use yield or harvest as an indicator of population
 #### Biological reference points (biomass-based)
 One method would be to use a sliding scale to reduce fishing mortality as stock declines.
 Need to attempt to establish a B0, and determine the compensatory capacity of the stock. This is fairly hard to do without an idea of B0 or the virgin biomass (biomass prior to fishing pressure).
-    
+
+### Estimating biological threholds
+In most cases a biological threhold is based on average biomass or recruitment for a period of time that is considered "normal" or typical for the stock. In many crab stocks this period of time is the entire time series minus the current year (here 1979 - 2018). However, there have also been adjustments to this time frame based on regime shifts, survey methodology changes, and general knowledge of the stock and the environment. Currently for red king crab in Southeast we use 1993 to 2007 as the baseline year.  Figures 2 and 3 depict these two time frames with respect to mature male biomass for Southeast Alaska red king crab.
+
 #### Stoplight method based on biological threshold
-This method relies on an average survey biomass estimate to establish zones of stock status or health. The long-term averagve biomass would set green, yellow, and red levels that would dictact fishery openings and closures, in addition to aiding in determining the level of caution needed for setting harvest levels. 
+This method relies on an average survey biomass estimate to establish zones of stock status or health. The long-term averagve biomass would set green, yellow, and red levels that would dictact fishery openings and closures, in addition to aiding in determining the level of caution needed for setting harvest levels (Figures 2 and 3). 
 
 As an example, if the current year's biomass estimate was above the long-term average, here called the "mature target reference point", the population would be considered "healthy". If the current year's estimate lie between the long-term average and 50% of that average, the "trigger point", the population would be considered in "average or moderate" status. When the current year's estimate is between 50% (trigger) and 25% of the long-term average (limit reference point) then the population would be considered "below average" status. When the current year's estimate is below 20% of the long-term average then the population would be considered "poor". 
 
