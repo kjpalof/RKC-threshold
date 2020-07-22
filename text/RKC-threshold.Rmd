@@ -26,12 +26,15 @@ Ideally this threshold would be used to determine a harvest control rule for mor
 
 ## Background
 Currently the red king crab fishery in Southeast Alaska is managed, in regulation, using a clause that opens the fishery as long as there is a 200,000 pound surplus for harvest.  However, there is no guidance given as to how this surplus should or can be determined or guidance on the level that the population should be sustained. 
-Data available for use in this analysis is survey CPUE of all size and sex classes, fishey catch and CPUE (although the fishery has only opened once in the last decade), and mature male biomass estimated using a catch-survey analysis model (CSA) from survey CPUE and harvest data.  
+Data available for use in this analysis is survey CPUE of all size and sex classes, fishey catch and CPUE (although the fishery has only opened once in the last decade), and mature male biomass estimated using a catch-survey analysis model (CSA) from survey CPUE and harvest data (Figure 1).  
 
 Establishing biological reference points for this fishery would aid in more effective management. Opening and closing of the regional fishery could be based on the threhold estimated from survey data and appropriate harvest rates could still be determined based on the individual stock health of the surveyed areas, as is currently done.
 
 
 ## Methods
+
+### Estimating biological threholds
+In most cases a biological threhold is based on average biomass or recruitment for a period of time that is considered "normal" or typical for the stock. In many crab stocks this period of time is the entire time series minus the current year (here 1979 - 2018). However, there have also been adjustments to this time frame based on regime shifts, survey methodology changes, and general knowledge of the stock and the environment. 
 
 #### Average yield
 This is hard to use due to the sparse nature of the fishery.  There has been a fishery about once a 
