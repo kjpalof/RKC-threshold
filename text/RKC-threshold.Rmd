@@ -1,7 +1,7 @@
 ---
 title: "RKC threshold"
 author: "Katie Palof"
-date: "July 21, 2020"
+date: "September 2nd, 2020"
 output:
   word_document: 
    reference_docx: style_settings.docx
@@ -45,34 +45,50 @@ Need to attempt to establish a B0, and determine the compensatory capacity of th
 In most cases a biological threhold is based on average biomass or recruitment for a period of time that is considered "normal" or typical for the stock. In many crab stocks this period of time is the entire time series minus the current year (here 1979 - 2018). However, there have also been adjustments to this time frame based on regime shifts, survey methodology changes, and general knowledge of the stock and the environment. Currently for red king crab in Southeast we use 1993 to 2007 as the baseline year.  Figures 2 and 3 depict these two time frames with respect to mature male biomass for Southeast Alaska red king crab.
 
 #### Stoplight method based on biological threshold
-This method relies on an average survey biomass estimate to establish zones of stock status or health. The long-term averagve biomass would set green, yellow, and red levels that would dictact fishery openings and closures, in addition to aiding in determining the level of caution needed for setting harvest levels (Figures 2 and 3). 
+This method relies on an average survey biomass estimate to establish zones of stock status or health. The long-term averagve biomass would set green, yellow, and red levels that would dictact fishery openings and closures, in addition to aiding in determining the level of caution needed for setting harvest levels (Figures 2, 3, and 4). 
 
 As an example, if the current year's biomass estimate was above the long-term average, here called the "mature target reference point", the population would be considered "healthy". If the current year's estimate lie between the long-term average and 50% of that average, the "trigger point", the population would be considered in "average or moderate" status. When the current year's estimate is between 50% (trigger) and 25% of the long-term average (limit reference point) then the population would be considered "below average" status. When the current year's estimate is below 20% of the long-term average then the population would be considered "poor". 
 
 Federally managed crab stocks in western Alaska use a managment framework where a stock is considered "overfished" when the current year's biomass is below 50% of the average (below the orange/yellow line). At this point a rebuilding plan is put into place to ensure that the stock rebuilds to average levels, this does not necessarily mean the directed fishery but most often that is the case. 
 
-Figure 4 below shows three examples of harvest control rules that could be applied to this method. Option 1 allows for maximum harvest when the stock is above the mature target reference point (long-term average), then decreases between 20 to 10 % linearly when the stock is between the mature target reference point and the trigger reference point, and then makes further reductions when the stock is between the trigger and limit reference points. The fishery would be closed is the current stock biomass was below 20% of the mature target reference point. This options is the most risky or least conservative. Option 2 is similar to option 1 at high biomass but the fishery would be closed when the stock is below the Trigger reference point. Option 3 is the most conservative, since it linearly decreases the harvest from 20 to 0 % between the mature target reference point and the trigger reference point. These options are just examples of how a biological threshold or target reference point could be used for setting a harvest control rule. 
+Figure 5 below shows three examples of harvest control rules that could be applied to this method. Option 1 allows for maximum harvest when the stock is above the mature target reference point (long-term average), then decreases between 20 to 10 % linearly when the stock is between the mature target reference point and the trigger reference point, and then makes further reductions when the stock is between the trigger and limit reference points. The fishery would be closed is the current stock biomass was below 20% of the mature target reference point. This options is the most risky or least conservative. Option 2 is similar to option 1 at high biomass but the fishery would be closed when the stock is below the Trigger reference point. Option 3 is the most conservative, since it linearly decreases the harvest from 20 to 0 % between the mature target reference point and the trigger reference point. These options are just examples of how a biological threshold or target reference point could be used for setting a harvest control rule. 
 
+
+
+
+\newpage
 
 ## Figures
 
-Figure 1: Regional biomass of surveyed areas from 2019 models
+Figure 1: Regional biomass of surveyed areas from 2020 models
 
-![](../figures/2019/MRregional_biomass2_2019.png)
+![](../figures/2020/MRregional_biomass2_2020.png)
 
 
-Figure 2: Regional biomass of surveyed area from 2019 models using current long-term baseline (93-07)
-![](../figures/regional_levels.png)
+Figure 2: Regional biomass of surveyed area from 2020 models using current long-term baseline (93-07)
+![](../figures/2020/regional_levels1_2020.png)
 
-Figure 3: Regional biomass of surveyed area from 2019 models using the average of all years
-![](../figures/regional_levels2_2019.png)
 
-Figure 4: Harvest control rule examples using a stop-light method with a biological threshold.
+
+
+Figure 3: Regional biomass of surveyed area from 2020 models using the average of all years
+![](../figures/2020/regional_levels2_2020.png)
+
+
+
+
+Figure 4: Regional biomass of surveyed area from 2020 models current long-term baseline (93-07) with outliers (94, 95, and 96 removed)
+![](../figures/2020/regional_levels3_2020.png)
+
+
+
+
+Figure 5: Harvest control rule examples using a stop-light method with a biological threshold.
 ![](../figures/harvest_control_rule_options.png)
 
 
-Figure 5: Regional biomass of surveyed area from 2019 models and commercial harvest when open.
-![](../figures/harvest_w_regional_levels1_2019.png)
+Figure 6: Regional biomass of surveyed area from 2020 models and commercial harvest when open.
+![](../figures/2020/harvest_w_regional_levels1_2020.png)
 
 
 
