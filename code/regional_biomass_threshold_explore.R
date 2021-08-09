@@ -1,4 +1,4 @@
-# K.Palof   8-31-17 / 12-3-19 / 6-17-2020 / 9-2-2020 
+# K.Palof   8-31-17 / 12-3-19 / 6-17-2020 / 9-2-2020 / 8-9-2021
 # Exploration of regional biomass estimates - historic from Sigma Plot file -  'RKC Regional biomass estiamtes 1979-prsent with COMM catch.JNB'
 # Using regional estimates without Port Frederick, only 7 survey areas.
 # current biomass estimates from each area use 2019 model output
@@ -42,7 +42,77 @@ regional.b %>%
 
 
 # baseline -------
-# 1993 - 2007 baseline years
+## 93 to 19 ------------
+regional.b %>% 
+  filter(Year >= 1993 & Year <= 2019) %>% 
+  summarise(legal_baseline = mean(legal), mature_baseline = mean(mature), 
+            adj.legal_base = mean(adj_legal), adj.mature.base = mean(adj_mature)) %>% 
+  as.data.frame() %>% 
+  gather(type, pounds, factor_key = TRUE) %>% 
+  mutate(st_yr = 2007, label = c("CSA Legal (1993-2019)", "CSA Mature (1993-2019)", 
+                                 "Legal (1993-2019)", "Mature (1993-2019)")) ->reg_baseline3
+
+reg_baseline3[1:2, ] ->  reg_baseline_CSA3
+reg_baseline3[3:4, ] ->  reg_baseline_MR3
+
+reg_baseline_MR3 %>% 
+  filter(type == "adj.mature.base") %>% 
+  mutate(fifty = pounds*.5, twenty = pounds*.2) %>% 
+  as.data.frame() -> MATURE_reg_base_MR_3a
+# update to include all years -1
+str_yr = 1993
+end_yr = 2019
+
+regional.b %>% 
+  select(Year, adj_legal, adj_mature, status) %>%
+  gather(type, pounds, adj_legal:adj_mature, factor_key = TRUE) %>%
+  mutate(status = replace(status, which(status == "TBD"), "closed")) %>% # can replace the TBD with open or closed
+  ggplot(aes(Year, pounds, group = type)) +
+  geom_line(aes(colour = type, group = type, linetype = type))+
+  geom_point(aes(colour = type, shape = status, fill = type), size =3) +
+  scale_colour_manual(name = "", values = c("black", "grey60", "black", "grey60"), 
+                      labels = c("Legal Biomass", "Mature Biomass"))+
+  scale_shape_manual(name = "Fishery Status", values = c(25, 21, 8))+
+  scale_linetype_manual(name = "", values = c("solid", "dashed", "solid", "dashed"), 
+                        guide = FALSE) +
+  scale_fill_manual(name = "", values = c("black", "gray75"), 
+                    guide = FALSE) +
+  scale_y_continuous(label=comma, limits = c(0,(max(regional.b$adj_mature,
+                                                       na.rm = TRUE) + 100000)),
+                     breaks= seq(min(0), max(max(regional.b$adj_mature, na.rm = TRUE) +100000), 
+                                 by = 500000)) +
+  scale_x_continuous(breaks = seq(min(1975),max(max(regional.b$Year) + 1), by = 2)) +
+  ylab("Biomass (lb)") + 
+  theme(plot.title = element_text(hjust =0.5)) +
+  theme(legend.position = c(0.825,0.793), legend.title = element_text(size = 9), 
+        legend.text = element_text(size = 14), axis.text.x = element_text(angle = 45), 
+        axis.title = element_text(size = 14, face = "bold"), 
+        axis.text = element_text(size = 14)) +
+  #ggtitle("Biomass of surveyed areas for Southeast Alaska red king crab") + 
+  theme(axis.text.x = element_text(vjust = 0.50)) -> p1
+
+p1 + geom_hline(yintercept = MATURE_reg_base_MR_3a$pounds, lwd = 0.5, colour = "green4") +
+  geom_text(aes((str_yr + 13), MATURE_reg_base_MR_3a$pounds, 
+                label = paste0("Mature Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+  
+  geom_hline(yintercept = MATURE_reg_base_MR_3a$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
+  geom_text(aes((str_yr + 12), MATURE_reg_base_MR_3a$fifty, 
+                label = ("Trigger (50% of target)"), vjust = -1, hjust = 0.05)) +
+  
+  geom_hline(yintercept = MATURE_reg_base_MR_3a$twenty, lwd = 0.5, color = "red") +
+  geom_text(aes((str_yr - 2), MATURE_reg_base_MR_3a$twenty, 
+                label = ("Limit Reference Point (20% of target)"), vjust = -1, hjust = 0.05)) +
+  geom_vline(xintercept = str_yr, linetype = "dashed") +
+  geom_vline(xintercept = end_yr, linetype = "dashed") +
+  annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") -> fig1
+#geom_point(size = 3, color = "dodgerblue") 
+ggsave(paste0('./figures/', cur_yr, '/regional_levels_93-19_', cur_yr, '.png'), fig1,  
+       dpi = 600, width = 10.5, height = 5.5)
+
+
+
+
+# 1993 - 2007 baseline years ------------
 regional.b %>% 
   filter(Year >= 1993 & Year <= 2007) %>% 
   summarise(legal_baseline = mean(legal), mature_baseline = mean(mature), 
@@ -50,10 +120,10 @@ regional.b %>%
   as.data.frame() %>% 
   gather(type, pounds, factor_key = TRUE) %>% 
   mutate(st_yr = 2007, label = c("CSA Legal (1993-2007)", "CSA Mature (1993-2007)", 
-                                 "Legal (1993-2007)", "Mature (1993-2007)")) ->reg_baseline
+                                 "Legal (1993-2007)", "Mature (1993-2007)")) ->reg_baseline1
 
-reg_baseline[1:2, ] ->  reg_baseline_CSA
-reg_baseline[3:4, ] ->  reg_baseline_MR
+reg_baseline1[1:2, ] ->  reg_baseline_CSA
+reg_baseline1[3:4, ] ->  reg_baseline_MR
 
 
 ## Figures for documents ------------------------------
@@ -138,11 +208,11 @@ p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "g
   
   geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
   geom_text(aes((str_yr + 12), MATURE_reg_base_MR_2$fifty, 
-                label = ("Trigger 50% of target)"), vjust = -1, hjust = 0.05)) +
+                label = ("Trigger (50% of target)"), vjust = -1, hjust = 0.05)) +
   
   geom_hline(yintercept = MATURE_reg_base_MR_2$twenty, lwd = 0.5, color = "red") +
   geom_text(aes((str_yr - 5), MATURE_reg_base_MR_2$twenty, 
-                label = ("Limit Reference Point 20% of target)"), vjust = -1, hjust = 0.05)) +
+                label = ("Limit Reference Point (20% of target)"), vjust = -1, hjust = 0.05)) +
   geom_vline(xintercept = str_yr, linetype = "dashed") +
   geom_vline(xintercept = end_yr, linetype = "dashed") +
   annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") -> fig1
@@ -162,16 +232,16 @@ regional.b %>%
             adj.legal_base = mean(adj_legal), adj.mature.base = mean(adj_mature)) %>% 
   as.data.frame() %>% 
   gather(type, pounds, factor_key = TRUE) %>% 
-  mutate(st_yr = 2007, label = c("CSA Legal (1993-2007)", "CSA Mature (1993-2007)", 
-                                 "Legal (1993-2007)", "Mature (1993-2007)")) ->reg_baseline
+  mutate(st_yr = 2007, label = c("CSA Legal (1979-2018)", "CSA Mature (1979-2018)", 
+                                 "Legal (1979-2018)", "Mature (1979-2018)")) ->reg_baseline2
 
-reg_baseline[1:2, ] ->  reg_baseline_CSA
-reg_baseline[3:4, ] ->  reg_baseline_MR
+reg_baseline2[1:2, ] ->  reg_baseline_CSA2
+reg_baseline2[3:4, ] ->  reg_baseline_MR2
 
-reg_baseline_MR %>% 
+reg_baseline_MR2 %>% 
   filter(type == "adj.mature.base") %>% 
   mutate(fifty = pounds*.5, twenty = pounds*.2) %>% 
-  as.data.frame() -> MATURE_reg_base_MR_2
+  as.data.frame() -> MATURE_reg_base_MR_2a
 # update to include all years -1
 str_yr = 1979
 end_yr = 2019
@@ -204,17 +274,17 @@ regional.b %>%
   #ggtitle("Biomass of surveyed areas for Southeast Alaska red king crab") + 
   theme(axis.text.x = element_text(vjust = 0.50)) -> p1
 
-p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "green4") +
-  geom_text(aes((str_yr + 22), MATURE_reg_base_MR_2$pounds, 
+p1 + geom_hline(yintercept = MATURE_reg_base_MR_2a$pounds, lwd = 0.5, colour = "green4") +
+  geom_text(aes((str_yr + 22), MATURE_reg_base_MR_2a$pounds, 
                 label = paste0("Mature Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
   
-  geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
-  geom_text(aes((str_yr + 12), MATURE_reg_base_MR_2$fifty, 
-                label = ("Trigger 50% of target)"), vjust = -1, hjust = 0.05)) +
+  geom_hline(yintercept = MATURE_reg_base_MR_2a$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
+  geom_text(aes((str_yr + 12), MATURE_reg_base_MR_2a$fifty, 
+                label = ("Trigger (50% of target)"), vjust = -1, hjust = 0.05)) +
   
-  geom_hline(yintercept = MATURE_reg_base_MR_2$twenty, lwd = 0.5, color = "red") +
-  geom_text(aes((str_yr - 2), MATURE_reg_base_MR_2$twenty, 
-                label = ("Limit Reference Point 20% of target)"), vjust = -1, hjust = 0.05)) +
+  geom_hline(yintercept = MATURE_reg_base_MR_2a$twenty, lwd = 0.5, color = "red") +
+  geom_text(aes((str_yr - 2), MATURE_reg_base_MR_2a$twenty, 
+                label = ("Limit Reference Point (20% of target)"), vjust = -1, hjust = 0.05)) +
   geom_vline(xintercept = str_yr, linetype = "dashed") +
   geom_vline(xintercept = end_yr, linetype = "dashed") +
   annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") -> fig1
@@ -276,11 +346,11 @@ p1 + geom_hline(yintercept = MATURE_reg_base_MR_2$pounds, lwd = 0.5, colour = "g
   
   geom_hline(yintercept = MATURE_reg_base_MR_2$fifty, lwd = 0.5, linetype = "dashed",color = "darkorange1") +
   geom_text(aes((str_yr + 12), MATURE_reg_base_MR_2$fifty, 
-                label = ("Trigger 50% of target)"), vjust = -1, hjust = 0.05)) +
+                label = ("Trigger (50% of target)"), vjust = -1, hjust = 0.05)) +
   
   geom_hline(yintercept = MATURE_reg_base_MR_2$twenty, lwd = 0.5, color = "red") +
   geom_text(aes((str_yr - 5), MATURE_reg_base_MR_2$twenty, 
-                label = ("Limit Reference Point 20% of target)"), vjust = -1, hjust = 0.05)) +
+                label = ("Limit Reference Point (20% of target)"), vjust = -1, hjust = 0.05)) +
   geom_vline(xintercept = str_yr, linetype = "dashed") +
   geom_vline(xintercept = end_yr, linetype = "dashed") +
   annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
